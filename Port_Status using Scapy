@@ -1,0 +1,19 @@
+
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+from scapy.all import *
+
+ip_address = raw_input('Enter IP:')
+sourceport = RandShort()
+port_num = 25
+
+var = IP(dst=ip_address)/TCP(sport=sourceport,dport=port_num,flags="S")
+connect = sr1(var,timeout=10)
+if (str(type(connect))=="<type 'NoneType'>"):
+    print ip_address, 'Port is Closed'
+elif connect.haslayer(TCP):
+    if connect.getlayer(TCP).flags==0x12:
+    	RST = sr(IP(dst=ip_address)/TCP(sport=sourceport,dport=port_num, flags='AR'),timeout=1)
+    	print ip_address, 'Port is Open.'
+    elif connect.getlayer(TCP).flags==0x14:
+    	print ip_address, 'Port is Closed.'
