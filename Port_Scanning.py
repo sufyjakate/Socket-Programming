@@ -44,9 +44,6 @@ def ip_retrieve():
 #    print 'Process %s are waiting from %s secs' % (inputs, times)
 #    time.sleep(int(times))
 
-def thread_handler():
-    proc = multiprocessing.Pool(4)
-    proc.map(checkport, ip_retrieve)
 
 # Function for Port Scanning
 def checkport(ip_address):
@@ -64,6 +61,10 @@ def checkport(ip_address):
     # print count
     output_file.close()
     # return port_status
+
+def thread_handler():
+    proc2 = multiprocessing.Pool(4)
+    proc2.map(checkport(ip_retrieve()))
 
 if __name__ == '__main__':
     thread_handler()
