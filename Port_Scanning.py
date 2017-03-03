@@ -4,8 +4,7 @@ import re
 import csv
 import os
 import smtplib
-import threading
-from random import randint
+import multiprocessing
 from time import sleep
 # Function for retrieving IP address
 def ip_retrieve():
@@ -41,6 +40,13 @@ def ip_retrieve():
                         print count
                         checkport(ip_address)
 
+#def worker_thread((inputs, times)):
+#    print 'Process %s are waiting from %s secs' % (inputs, times)
+#    time.sleep(int(times))
+
+def thread_handler():
+    proc = multiprocessing.Pool(4)
+    proc.map(checkport, ip_retrieve)
 
 # Function for Port Scanning
 def checkport(ip_address):
@@ -59,4 +65,5 @@ def checkport(ip_address):
     output_file.close()
     # return port_status
 
-ip_retrieve()
+if __name__ == '__main__':
+    thread_handler()
